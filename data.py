@@ -1,7 +1,6 @@
 import math
 from numpy import where
 import numpy as np
-from sklearn.feature_selection import mutual_info_classif
 import pandas as pd
 from sklearn.linear_model import Lasso
 from matplotlib import pyplot as plt
