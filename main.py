@@ -1,32 +1,42 @@
 import numpy as np
-from classification import predictRandomForest, predictSVM, predictKNeighbors
-from data import loadData, find_attr, plot_data
+from classification import final_predict, mlp
+from data import loadData
 
 
 def main():
     # load data
     X, y, data = loadData('WineQT.csv')
-    # make train, validation, test data
-    X_train = X[:int(len(X) * 0.6), :]
-    y_train = y[:int(len(X) * 0.6)]
-    X_val = X[int(len(X) * 0.6):int(len(X) * 0.8), :]
-    y_val = y[int(len(X) * 0.6):int(len(X) * 0.8)]
-    X_test = X[int(len(X) * 0.8):, :]
-    y_test = y[int(len(X) * 0.8):]
+    # split data to train, test
+    X_train, y_train, X_test, y_test = split_data(X, y, 0.8)
 
     # normalize
     mean = np.mean(X_train, axis=0)
     std = np.std(X_train, axis=0)
     X_train = (X_train - mean) / std
-    X_val = (X_val - mean) / std
     X_test = (X_test - mean) / std
+    '''
+    RFC hyper (64, 7)
+    SVC hyper (0.2, 0.16)
+    KNC hyper 9 
+    '''
 
-    predictSVM(X_train, y_train, X_val, y_val, X_test, y_test)
-    predictRandomForest(X_train, y_train, X_val, y_val, X_test, y_test)
-    predictKNeighbors(X_train, y_train, X_val, y_val, X_test, y_test)
+    # print("RFC hyper " + str(get_hyper_param_RFT(X_train, y_train, X_test, y_test)))
+    # print("SVC hyper " + str(get_hyper_param_SVC(X_train, y_train, X_test, y_test)))
+    # print("KNC hyper " + str(get_hyper_param_KNC(X_train, y_train, X_test, y_test)))
+    final_predict(X_train, y_train, X_test, y_test)
+    # mlp(X, y)
 
-    find_attr(X, y, data)
-    plot_data(X, y)
+    # find_attr(X, y, data)
+    # plot_data(X, y, {"index": 10, "name": "alcohol"}, {"index": 1, "name": "volatile acidity"})
+
+
+def split_data(X, y, train_size):
+    X_train = X[:int(len(X) * train_size), :]
+    y_train = y[:int(len(X) * train_size)]
+    X_test = X[int(len(X) * train_size):, :]
+    y_test = y[int(len(X) * train_size):]
+    return X_train, y_train, X_test, y_test
+
 
 if __name__ == '__main__':
     main()
