@@ -1,6 +1,6 @@
 import numpy as np
-from classification import final_predict, mlp
-from data import loadData
+from classification import final_predict, mlp, get_hyper_param_KNC, get_hyper_param_SVC, get_hyper_param_RFT
+from data import loadData, plot_data, find_attr
 
 
 def main():
@@ -17,17 +17,20 @@ def main():
     '''
     RFC hyper (64, 7)
     SVC hyper (0.2, 0.16)
-    KNC hyper 9 
+    KNC hyper 67 
     '''
 
     # print("RFC hyper " + str(get_hyper_param_RFT(X_train, y_train, X_test, y_test)))
     # print("SVC hyper " + str(get_hyper_param_SVC(X_train, y_train, X_test, y_test)))
     # print("KNC hyper " + str(get_hyper_param_KNC(X_train, y_train, X_test, y_test)))
+    # find_attr(X, y, data)
     final_predict(X_train, y_train, X_test, y_test)
     # mlp(X, y)
 
     # find_attr(X, y, data)
     # plot_data(X, y, {"index": 10, "name": "alcohol"}, {"index": 1, "name": "volatile acidity"})
+    # plot_data(X, y, {"index": 9, "name": "sulphates"}, {"index": 1, "name": "volatile acidity"})
+    # plot_data(X, y, {"index": 9, "name": "sulphates"}, {"index": 10, "name": "alcohol"})
 
 
 def split_data(X, y, train_size):
