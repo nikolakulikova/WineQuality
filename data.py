@@ -18,14 +18,7 @@ def loadData(filename):
 
 
 def find_attr(X, y, data):
-    # alcohol, sulphates, volatile acidity, citric acid, chlorides, density
-    """Information Gain
-
-        Information gain calculates the reduction in entropy from the transformation of a dataset.
-        It can be used for feature selection by evaluating the Information gain of each variable in the context of the
-        target variable.
-        https://machinelearningmastery.com/information-gain-and-mutual-information/
-        """
+    # Information gain: alcohol, sulphates, volatile acidity, citric acid, chlorides, density
     importances = mutual_info_classif(X, y)
     feat_importances = pd.Series(importances, data.columns[0:len(data.columns) - 1])
     feat_importances.plot(kind='barh', color="blue")
@@ -36,6 +29,7 @@ def find_attr(X, y, data):
     best_alpha = 1
     a = 1
 
+    #find best alpha for lasso
     while a != 0:
         clf = Lasso(alpha=a)
         score = -np.mean(cross_val_score(clf, X, y, cv=5, scoring='neg_mean_squared_error'))
@@ -55,24 +49,13 @@ def find_attr(X, y, data):
     return indexes
 
 
-def plot_data(X, y):
+def plot_data(X, y, attr1, attr2):
     for quality in range(10):
         row_ix = where(y == quality)
-        plt.scatter(X[row_ix, 10], X[row_ix, 1],
+        plt.scatter(X[row_ix, attr1.get("index")], X[row_ix, attr2.get("index")],
                     label=str(quality))
 
-    plt.xlabel("alcohol")
-    plt.ylabel("volatile acidity")
+    plt.xlabel(attr1.get("name"))
+    plt.ylabel(attr2.get("name"))
     plt.legend()
     plt.show()
-
-    # for quality in range(10):
-    #     row_ix = where(y == quality)
-    #     plt.scatter(X[row_ix, 10], X[row_ix, 8],
-    #                 label=str(quality))
-    #
-    #
-    # plt.xlabel("pH")
-    # plt.ylabel("quality")
-    # plt.legend()
-    # plt.show()
