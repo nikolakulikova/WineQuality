@@ -18,12 +18,6 @@ def loadData(filename):
 
 
 def find_attr(X, y, data):
-    # Information gain: alcohol, sulphates, volatile acidity, citric acid, chlorides, density
-    importances = mutual_info_classif(X, y)
-    feat_importances = pd.Series(importances, data.columns[0:len(data.columns) - 1])
-    feat_importances.plot(kind='barh', color="blue")
-    plt.show()
-
     # by Lasso: fixed acidity,volatile acidity,free sulfur dioxide,total sulfur dioxide,sulphates,alcohol
     last_score = math.inf
     best_alpha = 1
